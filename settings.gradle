@@ -1,2 +1,2 @@
 rootProject.name = 'cse373'
-include  'cse143review', 'deques', 'maps', 'heap', 'mazes'
+include  'cse143review', 'deques', 'maps', 'heap', 'mazes', 'seamcarving'
