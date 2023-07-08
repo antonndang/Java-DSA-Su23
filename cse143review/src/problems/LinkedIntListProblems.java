@@ -1,7 +1,6 @@
 package problems;
 
 import datastructures.LinkedIntList;
-// Checkstyle will complain that this is an unused import until you use it in your code.
 import datastructures.LinkedIntList.ListNode;
 
 import java.util.Iterator;
@@ -9,14 +8,14 @@ import java.util.Iterator;
 
 /**
  * See the spec on the website for example behavior.
- *
+ * <p>
  * REMEMBER THE FOLLOWING RESTRICTIONS:
  * - do not call any methods on the `LinkedIntList` objects.
  * - do not construct new `ListNode` objects for `reverse3` or `firstToLast`
- *      (though you may have as many `ListNode` variables as you like).
+ * (though you may have as many `ListNode` variables as you like).
  * - do not construct any external data structures such as arrays, queues, lists, etc.
  * - do not mutate the `data` field of any node; instead, change the list only by modifying
- *      links between nodes.
+ * links between nodes.
  */
 
 public class LinkedIntListProblems {

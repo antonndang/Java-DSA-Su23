@@ -3,7 +3,7 @@ package problems;
 
 /**
  * See the spec on the website for example behavior.
- *
+ * <p>
  * REMEMBER THE FOLLOWING RESTRICTIONS:
  * - Do not add any additional imports
  * - Do not create new `int[]` objects for `toString` or `rotateRight`
@@ -16,7 +16,7 @@ public class ArrayProblems {
      */
     public static String toString(int[] array) {
         String[] arrayStrings = new String[array.length];
-        for (int i=0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             arrayStrings[i] = Integer.toString(array[i]);
         }
         return "[" + String.join(", ", arrayStrings) + "]";
