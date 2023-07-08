@@ -36,7 +36,6 @@ public class IntTreeProblems {
                 + depthSumHelper(subRoot.left, weight + 1)
                 + depthSumHelper(subRoot.right, weight + 1)
         );
-
     }
     public static int depthSum(IntTree tree) {
         return depthSumHelper(tree.overallRoot, 1);
