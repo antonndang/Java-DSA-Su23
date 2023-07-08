@@ -31,7 +31,13 @@ public class IntTreeProblems {
         if (subRoot == null) {
             return 0;
         }
-        return subRoot.data * weight + depthSumHelper(subRoot.left, weight + 1) + depthSumHelper(subRoot.right, weight + 1);
+        /*return subRoot.data * weight + depthSumHelper(subRoot.left, weight + 1) + depthSumHelper(subRoot.right, weight + 1);*/
+        return (
+            subRoot.data * weight
+                + depthSumHelper(subRoot.left, weight + 1)
+                + depthSumHelper(subRoot.right, weight + 1)
+        );
+
     }
     public static int depthSum(IntTree tree) {
         return depthSumHelper(tree.overallRoot, 1);
