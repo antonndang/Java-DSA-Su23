@@ -1,6 +1,8 @@
 package deques;
 
-/** A basic doubly-linked node class. */
+/**
+ * A basic doubly-linked node class.
+ */
 class Node<T> {
     T value;
     Node<T> prev;
