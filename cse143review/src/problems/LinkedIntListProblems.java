@@ -4,6 +4,9 @@ import datastructures.LinkedIntList;
 // Checkstyle will complain that this is an unused import until you use it in your code.
 import datastructures.LinkedIntList.ListNode;
 
+import java.util.Iterator;
+
+
 /**
  * See the spec on the website for example behavior.
  *
@@ -22,16 +25,32 @@ public class LinkedIntListProblems {
      * Reverses the 3 elements in the `LinkedIntList` (assume there are exactly 3 elements).
      */
     public static void reverse3(LinkedIntList list) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // save the tail
+        ListNode newFront = list.front.next.next;
+        // move the front to the end
+        list.front.next.next = list.front;
+        // attach new front
+        newFront.next = list.front.next;
+        // terminate the new tail
+        list.front.next = null;
+        list.front = newFront;
+
     }
 
     /**
      * Moves the first element of the input list to the back of the list.
      */
     public static void firstToLast(LinkedIntList list) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (list.front != null && list.front.next != null) {
+            ListNode tail = list.front;
+            while (tail.next != null) {
+                tail = tail.next;
+            }
+            tail.next = list.front;
+            list.front = list.front.next;
+            tail.next.next = null;
+
+        }
     }
 
     /**
@@ -39,8 +58,23 @@ public class LinkedIntListProblems {
      * of n. Does not modify items of A or B.
      */
     public static LinkedIntList concatenate(LinkedIntList a, LinkedIntList b) {
-        // Hint: you'll need to use the 'new' keyword to construct new objects.
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        LinkedIntList result = new LinkedIntList();
+        // a dummy node to make sure we do not check for null for the first node
+        // always have a "previous" node to be added to
+        ListNode dummy = new ListNode(-1);
+        ListNode tail = dummy;
+        Iterator<Integer> it = a.iterator();
+        while (it.hasNext()) {
+            tail.next = new ListNode(it.next());
+            tail = tail.next;
+        }
+        it = b.iterator();
+        while (it.hasNext()) {
+            tail.next = new ListNode(it.next());
+            tail = tail.next;
+        }
+
+        result.front = dummy.next;
+        return result;
     }
 }

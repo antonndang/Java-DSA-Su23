@@ -27,25 +27,57 @@ public class IntTreeProblems {
      * Computes and returns the sum of the values multiplied by their depths in the given tree.
      * (The root node is treated as having depth 1.)
      */
+    private static int depthSumHelper(IntTreeNode subRoot, int weight) {
+        if (subRoot == null) {
+            return 0;
+        }
+        return subRoot.data * weight + depthSumHelper(subRoot.left, weight + 1) + depthSumHelper(subRoot.right, weight + 1);
+    }
     public static int depthSum(IntTree tree) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return depthSumHelper(tree.overallRoot, 1);
     }
 
     /**
      * Removes all leaf nodes from the given tree.
      */
+
+    private static IntTreeNode removeLeavesHelper(IntTreeNode subRoot) {
+        if (subRoot == null || (subRoot.left == null && subRoot.right == null)) {
+            // a null of a leaf, remove
+            return null;
+        }
+        // proceed to the left and right
+        subRoot.left = removeLeavesHelper(subRoot.left);
+        subRoot.right = removeLeavesHelper(subRoot.right);
+        return subRoot;
+    }
     public static void removeLeaves(IntTree tree) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        tree.overallRoot = removeLeavesHelper(tree.overallRoot);
     }
 
     /**
      * Removes from the given BST all values less than `min` or greater than `max`.
      * (The resulting tree is still a BST.)
      */
+
+    private static IntTreeNode trimHelper(IntTreeNode subRoot, int min, int max) {
+        if (subRoot == null) {
+            return  null;
+        }
+        if (subRoot.data < min) {
+            // nothing here or on the left, may be something still on the right
+            return trimHelper(subRoot.right, min, max);
+        }
+        if (subRoot.data > max) {
+            // nothing here or on the right
+            return trimHelper(subRoot.left, min, max);
+        }
+        // the current node is valid, just check its left and right
+        subRoot.left = trimHelper(subRoot.left, min, max);
+        subRoot.right = trimHelper(subRoot.right, min, max);
+        return subRoot;
+    }
     public static void trim(IntTree tree, int min, int max) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        tree.overallRoot = trimHelper(tree.overallRoot, min, max);
     }
 }
