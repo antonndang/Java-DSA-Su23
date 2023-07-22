@@ -100,8 +100,10 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
                 // double the array size
                 entries = createArrayOfEntries(oldEntries.length * 2);
                 // copy the old entries
-                for (int i = 0; i < this.size; i++) {
-                    entries[i] = oldEntries[i];
+                for (int i = 0, j = 0; i < freeSpaceStartIndex; i++) {
+                    if (oldEntries[i] != null) {
+                        entries[j++] = oldEntries[i];
+                    }
                 }
                 // now all items moved to the begining of the array
                 freeSpaceStartIndex = size;
