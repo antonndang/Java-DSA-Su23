@@ -2,14 +2,14 @@ package maps;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * @see AbstractIterableMap
  * @see Map
  */
 public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
-    // TODO: define a reasonable default value for the following field
-    private static final int DEFAULT_INITIAL_CAPACITY = 0;
+    private static final int DEFAULT_INITIAL_CAPACITY = 32;
     /*
     Warning:
     You may not rename this field or change its type.
@@ -18,6 +18,17 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     SimpleEntry<K, V>[] entries;
 
     // You may add extra fields or helper methods though!
+    private int size = 0;
+
+    private int indexByKey(K key) {
+        // locates the index on the key, returns -1 if not found
+        for (int i = 0; i < this.size; i++) {
+            if (this.entries[i].getKey().equals(key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     /**
      * Constructs a new ArrayMap with default initial capacity.
@@ -34,8 +45,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
      */
     public ArrayMap(int initialCapacity) {
         this.entries = this.createArrayOfEntries(initialCapacity);
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     /**
@@ -63,72 +72,103 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V get(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int index = indexByKey((K) key);
+        if (index != -1) {
+            return entries[index].getValue();
+        }
+        return null;
     }
 
     @Override
     public V put(K key, V value) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int index = indexByKey((K) key);
+        if (index != -1) {
+            // key is present in the map
+            V result = entries[index].getValue();
+            entries[index].setValue(value);
+            return result;
+        } else {
+            // key is absent in the map
+            if (this.entries.length == 0) {
+                // empty initial map
+                entries = createArrayOfEntries(32);
+            } else if (this.size == this.entries.length) {
+                // need to increase the map capacity
+                // reallocate the entries
+                SimpleEntry<K, V>[] oldEntries = entries;
+                // double the array size
+                entries = createArrayOfEntries(oldEntries.length * 2);
+                // copy the old entries
+                for (int i = 0; i < this.size; i++) {
+                    entries[i] = oldEntries[i];
+                }
+            }
+            this.entries[this.size++] = new SimpleEntry<K, V>(key, value);
+            return null;
+        }
     }
 
     @Override
     public V remove(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int index = indexByKey((K) key);
+        if (index != -1) {
+            V result = this.entries[index].getValue();
+            index++;
+            while (index < this.size) {
+                entries[index - 1] = entries[index];
+                index++;
+            }
+            this.size--;
+            return result;
+        }
+        return null;
     }
 
     @Override
     public void clear() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        this.size = 0;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return indexByKey((K) key) != -1;
     }
 
     @Override
     public int size() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return this.size;
     }
 
     @Override
     public Iterator<Map.Entry<K, V>> iterator() {
         // Note: You may or may not need to change this method, depending on whether you
         // add any parameters to the ArrayMapIterator constructor.
-        return new ArrayMapIterator<>(this.entries);
+        return new ArrayMapIterator<>(this.entries, this.size);
     }
 
-    // TODO: after you implement the iterator, remove this toString implementation
-    // Doing so will give you a better string representation for assertion errors the debugger.
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 
     private static class ArrayMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private final SimpleEntry<K, V>[] entries;
         // You may add more fields and constructor parameters
+        int nextIndex = 0;
+        int size;
 
-        public ArrayMapIterator(SimpleEntry<K, V>[] entries) {
+        public ArrayMapIterator(SimpleEntry<K, V>[] entries, int size) {
             this.entries = entries;
+            this.size = size;
         }
 
         @Override
         public boolean hasNext() {
-            // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            return nextIndex < size;
         }
 
         @Override
         public Map.Entry<K, V> next() {
-            // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            if (hasNext()) {
+                return entries[nextIndex++];
+            }
+            throw new NoSuchElementException();
         }
     }
 }
