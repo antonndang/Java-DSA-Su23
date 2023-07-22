@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * @see Map
  */
 public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
-    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.8;
+    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.9;
     private static final int DEFAULT_INITIAL_CHAIN_COUNT = 32;
     private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 16;
 
