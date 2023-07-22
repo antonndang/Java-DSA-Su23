@@ -19,11 +19,10 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     // You may add extra fields or helper methods though!
     private int size = 0;
-    private int freeSpaceStartIndex = 0;
 
     private int indexByKey(K key) {
         // locates the index on the key, returns -1 if not found
-        for (int i = 0; i < freeSpaceStartIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (this.entries[i] != null && this.entries[i].getKey().equals(key)) {
                 return i;
             }
@@ -92,24 +91,19 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
             // key is absent in the map
             if (this.entries.length == 0) {
                 // empty initial map
-                entries = createArrayOfEntries(32);
-            } else if (this.freeSpaceStartIndex == this.entries.length) {
+                entries = createArrayOfEntries(DEFAULT_INITIAL_CAPACITY);
+            } else if (this.size == this.entries.length) {
                 // need to increase the map capacity
                 // reallocate the entries
                 SimpleEntry<K, V>[] oldEntries = entries;
                 // double the array size
                 entries = createArrayOfEntries(oldEntries.length * 2);
                 // copy the old entries
-                for (int i = 0, j = 0; i < freeSpaceStartIndex; i++) {
-                    if (oldEntries[i] != null) {
-                        entries[j++] = oldEntries[i];
-                    }
+                for (int i = 0; i < size; i++) {
+                   entries[i] = oldEntries[i];
                 }
-                // now all items moved to the begining of the array
-                freeSpaceStartIndex = size;
             }
-            this.entries[freeSpaceStartIndex++] = new SimpleEntry<K, V>(key, value);
-            this.size++;
+            this.entries[size++] = new SimpleEntry<K, V>(key, value);
             return null;
         }
     }
@@ -119,8 +113,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         int index = indexByKey((K) key);
         if (index != -1) {
             V result = this.entries[index].getValue();
-            this.entries[index] = null;
-            this.size--;
+            entries[index] = entries[--size];
             return result;
         }
         return null;
@@ -129,7 +122,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     @Override
     public void clear() {
         this.size = 0;
-        this.freeSpaceStartIndex = 0;
     }
 
     @Override
@@ -154,8 +146,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         private final SimpleEntry<K, V>[] entries;
         // You may add more fields and constructor parameters
         private int nextIndex = 0;
-        private int currentSlot = 0;
-
         private int size;
 
         public ArrayMapIterator(SimpleEntry<K, V>[] entries, int size) {
@@ -172,11 +162,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         public Map.Entry<K, V> next() {
             if (hasNext()) {
                 // skip the null slots
-                while (entries[currentSlot] == null) {
-                    currentSlot++;
-                }
-                nextIndex++;
-                return entries[currentSlot++];
+                return entries[nextIndex++];
             }
             throw new NoSuchElementException();
         }
