@@ -1,15 +1,10 @@
 package priorityqueues;
 
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.ST;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 /**
  * @see ExtrinsicMinPQ
