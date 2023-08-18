@@ -3,7 +3,6 @@ package seamcarving;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Dynamic programming implementation of the {@link SeamFinder} interface.
