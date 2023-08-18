@@ -81,7 +81,7 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
         ArrayList<Integer> result = new ArrayList<>();
         // find the min on the right
         int minX = 0;
-        for (int x = 0; x < nRows; x++) {
+        for (int x = 0; x < nCols; x++) {
             if (dp[x][nRows - 1] < dp[minX][nRows - 1]) {
                 minX = x;
             }
