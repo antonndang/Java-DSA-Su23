@@ -44,7 +44,7 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
         result.add(minY);
         // now step back looking for the lowest value
         for (int x = nCols - 2; x >= 0; x--) {
-            int newMinY = 0;
+            int newMinY = minY;
             for (int y = Math.max(0, minY - 1); y <= Math.min(nRows - 1, minY + 1); y++) {
                 if (dp[x][y] < dp[x][newMinY]) {
                     newMinY = y;
@@ -89,7 +89,7 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
         result.add(minX);
         // now step back looking for the lowest value
         for (int y = nRows - 2; y >= 0; y--) {
-            int newMinX = 0;
+            int newMinX = minX;
             for (int x = Math.max(0, minX - 1); x <= Math.min(nCols - 1, minX + 1); x++) {
                 if (dp[x][y] < dp[newMinX][y]) {
                     newMinX = x;
