@@ -62,58 +62,67 @@ public class DijkstraSeamFinder implements SeamFinder {
                     }
                     break;
                 default:
-                    // in the image pixels
-                    // check for the pixels on the border
-                    int curX = getXFromIndex(vertex);
-                    int curY = getYFromIndex(vertex);
-                    if (curX == 0) {
-                        // connect to the left side
-                        result.add(new Edge<>(vertex, IMAGE_LEFT, 0));
-                    } else {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX - 1, curY), data[curX - 1][curY]));
-                    }
-
-                    if (curX == nCols - 1) {
-                        // connect to the right side
-                        result.add(new Edge<>(vertex, IMAGE_RIGHT, 0));
-                    } else {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX + 1, curY), data[curX + 1][curY]));
-                    }
-
-                    if (curY == 0) {
-                        // connect to the top side
-                        result.add(new Edge<>(vertex, IMAGE_TOP, 0));
-                    } else {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX, curY - 1), data[curX][curY - 1]));
-                    }
-
-                    if (curY == nRows - 1) {
-                        // connect to the top side
-                        result.add(new Edge<>(vertex, IMAGE_BOTTOM, 0));
-                    } else {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX, curY + 1), data[curX][curY + 1]));
-                    }
-
-                    if (curX > 0 && curY > 0) {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX - 1, curY - 1), data[curX - 1][curY - 1]));
-                    }
-                    if (curX > 0 && curY < nRows - 1) {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX - 1, curY + 1), data[curX - 1][curY + 1]));
-                    }
-                    if (curX < nCols - 1 && curY > 0) {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX + 1, curY - 1), data[curX + 1][curY - 1]));
-                    }
-                    if (curX < nCols - 1 && curY < nRows - 1) {
-                        result.add(new Edge<>(vertex, getIndexFromXY(curX + 1, curY + 1), data[curX + 1][curY + 1]));
-                    }
+                    updateImagePixelNeighbors(vertex, result);
             }
             return result;
         }
 
+        private void updateImagePixelNeighbors(Integer vertex, ArrayList<Edge<Integer>> result) {
+            // in the image pixels
+            // check for the pixels on the border
+            int curX = getXFromIndex(vertex);
+            int curY = getYFromIndex(vertex);
+            if (curX == 0) {
+                // connect to the left side
+                result.add(new Edge<>(vertex, IMAGE_LEFT, 0));
+            } else {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX - 1, curY), data[curX - 1][curY]));
+            }
+
+            if (curX == nCols - 1) {
+                // connect to the right side
+                result.add(new Edge<>(vertex, IMAGE_RIGHT, 0));
+            } else {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX + 1, curY), data[curX + 1][curY]));
+            }
+
+            if (curY == 0) {
+                // connect to the top side
+                result.add(new Edge<>(vertex, IMAGE_TOP, 0));
+            } else {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX, curY - 1), data[curX][curY - 1]));
+            }
+
+            if (curY == nRows - 1) {
+                // connect to the top side
+                result.add(new Edge<>(vertex, IMAGE_BOTTOM, 0));
+            } else {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX, curY + 1), data[curX][curY + 1]));
+            }
+
+            if (curX > 0 && curY > 0) {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX - 1, curY - 1), data[curX - 1][curY - 1]));
+            }
+            if (curX > 0 && curY < nRows - 1) {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX - 1, curY + 1), data[curX - 1][curY + 1]));
+            }
+            if (curX < nCols - 1 && curY > 0) {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX + 1, curY - 1), data[curX + 1][curY - 1]));
+            }
+            if (curX < nCols - 1 && curY < nRows - 1) {
+                result.add(new Edge<>(vertex, getIndexFromXY(curX + 1, curY + 1), data[curX + 1][curY + 1]));
+            }
+        }
+
         public ImageGraph(double[][] image) {
-             data = image;
              nRows = image[0].length;
              nCols = image.length;
+             data = new double[nCols][nRows];
+             for (int row = 0; row < nRows; row++) {
+                 for (int col = 0; col < nCols; col++) {
+                     data[col][row] = image[col][row];
+                 }
+             }
         }
     }
     private final ShortestPathFinder<Graph<Integer, Edge<Integer>>, Integer, Edge<Integer>> pathFinder;
