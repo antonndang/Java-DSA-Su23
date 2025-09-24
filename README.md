@@ -1,4 +1,4 @@
-# Data Structures & Algorithms in Java (CSE 373)
+# Data Structures & Algorithms in Java
 
 This repo contains my **DSA implementations and assignments in Java** for CSE 373.
 
